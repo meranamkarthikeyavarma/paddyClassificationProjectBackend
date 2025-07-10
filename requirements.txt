@@ -2,4 +2,4 @@ flask
 flask-cors
 opencv-python 
 werkzeug
-tensorflow
+tensorflow-cpu==2.13.0
