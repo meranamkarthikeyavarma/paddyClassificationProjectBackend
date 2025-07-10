@@ -144,6 +144,7 @@ def predict():
             return jsonify(response)
             
         except Exception as e:
+            print("❌ Error processing image:", str(e))
             return jsonify({'error': f'Error processing image: {str(e)}'}), 500
             
         finally:
@@ -155,6 +156,7 @@ def predict():
                 pass
     
     except Exception as e:
+        print("❌ Error in /predict:", str(e))
         return jsonify({'error': f'Unexpected error: {str(e)}'}), 500
 
 @app.route('/health', methods=['GET'])
