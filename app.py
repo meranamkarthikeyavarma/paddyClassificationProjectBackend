@@ -6,6 +6,9 @@ import numpy as np
 import os
 import time
 from werkzeug.utils import secure_filename
+import gdown
+
+
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -22,21 +25,30 @@ app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Model configuration
-MODEL_PATH = r"E:\ThePaddyClassification\Backend\BestModel.keras"  # Update this with your actual model path
+file_id = os.environ.get("GDRIVE_FILE_ID")
+GDRIVE_FILE_ID = file_id
+MODEL_PATH = "BestModel.keras"
+
+# -------------------- Download Model If Not Exists --------------------
+
+if not os.path.exists(MODEL_PATH):
+    print("Downloading model from Google Drive...")
+    gdown.download(f"https://drive.google.com/uc?id={GDRIVE_FILE_ID}", MODEL_PATH, quiet=False)
+
+# -------------------- Load Model --------------------
+
+try:
+    model = keras.models.load_model(MODEL_PATH)
+    print("✅ Model loaded successfully!")
+    model.summary()
+except Exception as e:
+    print(f"❌ Error loading model: {e}")
+    model = None
+
 IMAGE_SIZE = (150, 150)
 CLASSES = ['AkhuRush', 'BalaDubraj', 'DesiShiv', 'Giyos', 'JALAKA',
            'Kiraat', 'kumkumsali', 'RadhaPagal', 'samuralahari', 'SannaJajulu',
            'UjalaManipal']
-
-# Load the model (do this once when the app starts)
-try:
-    model = keras.models.load_model(MODEL_PATH)
-    print("Model loaded successfully!")
-    print("Model summary:")
-    model.summary()
-except Exception as e:
-    print(f"Error loading model: {e}")
-    model = None
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -175,4 +187,4 @@ if __name__ == '__main__':
     print(f"Model loaded: {model is not None}")
     print(f"Classes: {CLASSES}")
     print("Server running on http://localhost:5000")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # app.run(debug=True, host='0.0.0.0', port=5000)
