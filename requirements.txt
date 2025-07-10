@@ -3,3 +3,4 @@ flask-cors
 opencv-python 
 werkzeug
 tensorflow-cpu==2.13.0
+gunicorn
