@@ -1,6 +1,6 @@
 flask
 flask-cors
-opencv-python 
+opencv-python-headless
 werkzeug
 tensorflow==2.16.1
 keras
