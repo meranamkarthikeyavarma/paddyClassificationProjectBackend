@@ -3,6 +3,6 @@ flask-cors
 opencv-python 
 werkzeug
 tensorflow==2.15.1
-keras==2.15.1
+keras
 gunicorn
 gdown
